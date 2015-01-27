@@ -199,8 +199,11 @@ void * handleConnectedSocket(void *params) {
 int main() {
 
 	list<sUserInfo_t> onlineList;
+	char serverIP[64];
+	printf("Please input server IP: \n");
+	scanf("%s", serverIP);
 	
-	int listener = initiateServerListener(SERVER_PORT, 50, "127.0.0.1");
+	int listener = initiateServerListener(SERVER_PORT, 50, serverIP);
 
 	if(listener == -1)
 		return -1;

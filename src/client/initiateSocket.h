@@ -33,10 +33,7 @@ int initiateTCPListener(int nLengthOfQueueOfListen, sUserInfo_t *userInfo_ptr) {
 	memset(&listenerAddr, 0, sizeof(sockaddr_in));
 
 	listenerAddr.sin_family = AF_INET;
-	if(::inet_pton(AF_INET, "127.0.0.1", &listenerAddr.sin_addr.s_addr) != 1) {
-		close(listener);
-		return -1;
-	}
+	listenerAddr.sin_addr.s_addr = userInfo_ptr->ip;
 	listenerAddr.sin_port = htons(0);
 	if(::bind(listener, (sockaddr *)&listenerAddr, sizeof(sockaddr_in)) == -1) {
 		close(listener);

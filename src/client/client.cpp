@@ -44,8 +44,15 @@ int deleteAllCDKWidgets(sMainPage_t main_page) {
 int main() {
 	//intiate work
 	//
+	//
 	char buffer[256];
 	sUserInfo_t userInformation;
+	char localIP[64];
+	char serverIP[64];
+
+	printf("Please Input the server IP and local IP:\n");
+	scanf("%s%s", serverIP, localIP);
+//	printf("server IP: %s\nlocal IP: %s\n", serverIP, localIP);
 
 	mkdir("./records", 0777);
 
@@ -70,7 +77,12 @@ int main() {
 	
 	CDKSCREEN *cdkscreen = 0;
 	WINDOW *cursesWin = 0;
-
+	
+	if(inet_pton(AF_INET, localIP, &userInformation.ip) != 1) {
+		printf("inet_pton error 1.\n");
+		return -1;
+	}
+	
 	int listener = initiateTCPListener(LISTEN_QUEUE_LEN, &userInformation);
 	if(listener == -1)
 		return -1;
@@ -79,7 +91,7 @@ int main() {
 	memset(&TCPServerAddress, 0, sizeof(sockaddr_in));
 
 	TCPServerAddress.sin_family = AF_INET;
-	if(::inet_pton(AF_INET, "127.0.0.1", &TCPServerAddress.sin_addr.s_addr) == -1){
+	if(::inet_pton(AF_INET, serverIP, &TCPServerAddress.sin_addr.s_addr) == -1){
 		close(listener);
 		return -1;
 	}
